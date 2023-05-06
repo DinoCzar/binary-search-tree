@@ -223,6 +223,25 @@ function height(node) {
 	return Math.max(leftHeight, rightHeight) + 1;
 }
 
+function depth(root, node) {
+	if (root === null) {
+		return -1;
+	}
+
+	if (root === node) {
+		return 0;
+	}
+
+	const leftDepth = depth(root.left, node);
+	const rightDepth = depth(root.right, node);
+
+	if (leftDepth === -1 && rightDepth === -1) {
+		return -1; // Node not found in the subtree
+	}
+
+	return Math.max(leftDepth, rightDepth) + 1;
+}
+
 const root = createNode(1);
 root.left = createNode(2);
 root.right = createNode(3);
@@ -231,5 +250,5 @@ root.left.right = createNode(5);
 root.right.left = createNode(6);
 root.right.right = createNode(7);
 
-const nodeHeight = height(root);
-console.log(nodeHeight); // Output: 2
+const nodeDepth = depth(root, root.left.right);
+console.log(nodeDepth); // Output: 2
