@@ -38,6 +38,65 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 	}
 };
 
-const data = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-const root = buildTree(data);
+function insert(root, value) {
+	if (root === null) {
+		return createNode(value);
+	}
+
+	if (value < root.data) {
+		root.left = insert(root.left, value);
+	} else if (value > root.data) {
+		root.right = insert(root.right, value);
+	}
+
+	return root;
+}
+
+function deleteNode(root, value) {
+	if (root === null) {
+		return null;
+	}
+
+	if (value < root.data) {
+		root.left = deleteNode(root.left, value);
+	} else if (value > root.data) {
+		root.right = deleteNode(root.right, value);
+	} else {
+		if (root.left === null && root.right === null) {
+			return null;
+		} else if (root.left === null) {
+			return root.right;
+		} else if (root.right === null) {
+			return root.left;
+		}
+
+		const minValue = findMinValue(root.right);
+		root.data = minValue;
+		root.right = deleteNode(root.right, minValue);
+	}
+
+	return root;
+}
+
+function findMinValue(node) {
+	let current = node;
+	while (current.left !== null) {
+		current = current.left;
+	}
+	return current.data;
+}
+
+const root = createNode(5);
+insert(root, 3);
+insert(root, 8);
+insert(root, 2);
+insert(root, 4);
+insert(root, 7);
+
 prettyPrint(root);
+
+deleteNode(root, 3);
+
+console.log('After deletion:');
+prettyPrint(root);
+
