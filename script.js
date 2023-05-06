@@ -214,11 +214,22 @@ function postorder(root, callback = null) {
 
 function height(node) {
 	if (node === null) {
-		return -1;
+		return 0;
 	}
 
 	const leftHeight = height(node.left);
+	if (leftHeight === -1) {
+		return -1; // Left subtree is unbalanced, propagate the unbalanced state
+	}
+
 	const rightHeight = height(node.right);
+	if (rightHeight === -1) {
+		return -1; // Right subtree is unbalanced, propagate the unbalanced state
+	}
+
+	if (Math.abs(leftHeight - rightHeight) > 1) {
+		return -1; // Current node is unbalanced
+	}
 
 	return Math.max(leftHeight, rightHeight) + 1;
 }
@@ -243,18 +254,7 @@ function depth(root, node) {
 }
 
 function isBalanced(root) {
-	if (root === null) {
-		return true;
-	}
-
-	const leftHeight = height(root.left);
-	const rightHeight = height(root.right);
-
-	if (Math.abs(leftHeight - rightHeight) > 1) {
-		return false;
-	}
-
-	return isBalanced(root.left) && isBalanced(root.right);
+	return height(root) !== -1;
 }
 
 function rebalance(root) {
