@@ -257,13 +257,28 @@ function isBalanced(root) {
 	return isBalanced(root.left) && isBalanced(root.right);
 }
 
-const root = createNode(1);
-root.left = createNode(2);
-root.right = createNode(3);
-root.left.left = createNode(4);
-root.left.right = createNode(5);
-root.right.left = createNode(6);
-root.right.right = createNode(7);
+function rebalance(root) {
+	const nodes = [];
 
-const balanced = isBalanced(root);
-console.log(balanced); // Output: true
+	// Perform in-order traversal to obtain sorted array of nodes
+	inorder(root, (node) => {
+		nodes.push(node.data);
+	});
+
+	// Clear existing tree structure
+	root.left = null;
+	root.right = null;
+
+	// Rebuild the tree with the sorted array
+	const newRoot = buildTree(nodes);
+
+	return newRoot;
+}
+
+const unbalancedRoot = createNode(3);
+unbalancedRoot.left = createNode(2);
+unbalancedRoot.left.left = createNode(1);
+unbalancedRoot.right = createNode(4);
+
+const balancedRoot = rebalance(unbalancedRoot);
+console.log(balancedRoot)
