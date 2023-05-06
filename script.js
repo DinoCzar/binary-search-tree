@@ -275,10 +275,98 @@ function rebalance(root) {
 	return newRoot;
 }
 
-const unbalancedRoot = createNode(3);
-unbalancedRoot.left = createNode(2);
-unbalancedRoot.left.left = createNode(1);
-unbalancedRoot.right = createNode(4);
+// Factory function to create a Tree
+function createTree(data) {
+	const root = buildTree(data);
 
-const balancedRoot = rebalance(unbalancedRoot);
-console.log(balancedRoot)
+	return {
+		getRoot: function () {
+			return root;
+		},
+		insert: function (value) {
+			insert(root, value);
+		},
+	};
+}
+
+// Function to generate an array of random numbers
+function generateRandomNumbers(count, min, max) {
+	const numbers = [];
+	for (let i = 0; i < count; i++) {
+		numbers.push(Math.floor(Math.random() * (max - min + 1) + min));
+	}
+	return numbers;
+}
+
+// Create a binary search tree from an array of random numbers
+const randomNumbers = generateRandomNumbers(10, 1, 100);
+const bst = createTree(randomNumbers);
+const root = bst.getRoot();
+
+// Check if the tree is initially balanced
+const initialBalanced = isBalanced(root);
+console.log('Is the tree initially balanced?', initialBalanced);
+
+// Print elements in level order
+console.log('Level Order Traversal:');
+levelOrder(root, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in pre-order
+console.log('Pre-order Traversal:');
+preorder(root, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in post-order
+console.log('Post-order Traversal:');
+postorder(root, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in in-order
+console.log('In-order Traversal:');
+inorder(root, (node) => {
+	console.log(node.data);
+});
+
+// Unbalance the tree by adding numbers greater than 100
+bst.insert(101);
+bst.insert(105);
+bst.insert(110);
+
+// Check if the tree is unbalanced after adding numbers
+const unbalanced = isBalanced(root);
+console.log('Is the tree unbalanced?', unbalanced);
+
+// Rebalance the tree
+const balancedRoot = rebalance(root);
+
+// Check if the tree is balanced after rebalancing
+const balanced = isBalanced(balancedRoot);
+console.log('Is the tree balanced after rebalancing?', balanced);
+
+// Print elements in level order after rebalancing
+console.log('Level Order Traversal after rebalancing:');
+levelOrder(balancedRoot, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in pre-order after rebalancing
+console.log('Pre-order Traversal after rebalancing:');
+preorder(balancedRoot, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in post-order after rebalancing
+console.log('Post-order Traversal after rebalancing:');
+postorder(balancedRoot, (node) => {
+	console.log(node.data);
+});
+
+// Print elements in in-order after rebalancing
+console.log('In-order Traversal after rebalancing:');
+inorder(balancedRoot, (node) => {
+	console.log(node.data);
+});
