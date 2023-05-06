@@ -212,6 +212,17 @@ function postorder(root, callback = null) {
 	return result;
 }
 
+function height(node) {
+	if (node === null) {
+		return -1;
+	}
+
+	const leftHeight = height(node.left);
+	const rightHeight = height(node.right);
+
+	return Math.max(leftHeight, rightHeight) + 1;
+}
+
 const root = createNode(1);
 root.left = createNode(2);
 root.right = createNode(3);
@@ -220,21 +231,5 @@ root.left.right = createNode(5);
 root.right.left = createNode(6);
 root.right.right = createNode(7);
 
-const printNode = (node) => {
-	console.log(node.data);
-};
-
-const inorderValues = inorder(root);
-console.log(inorderValues); // Output: [4, 2, 5, 1, 6, 3, 7]
-
-const preorderValues = preorder(root);
-console.log(preorderValues); // Output: [1, 2, 4, 5, 3, 6, 7]
-
-const postorderValues = postorder(root);
-console.log(postorderValues); // Output: [4, 5, 2, 6, 7, 3, 1]
-
-inorder(root, printNode); // Output: 4, 2, 5, 1, 6, 3, 7 (printed individually)
-
-preorder(root, printNode); // Output: 1, 2, 4, 5, 3, 6, 7 (printed individually)
-
-postorder(root, printNode); // Output: 4, 5, 2, 6, 7, 3, 1 (printed individually)
+const nodeHeight = height(root);
+console.log(nodeHeight); // Output: 2
