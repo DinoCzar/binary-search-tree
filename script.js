@@ -98,12 +98,143 @@ function find(root, value) {
 	}
 }
 
-const root = createNode(5);
-insert(root, 3);
-insert(root, 8);
-insert(root, 2);
-insert(root, 4);
-insert(root, 7);
+function levelOrder(root, callback = null) {
+	if (root === null) {
+		return [];
+	}
 
-const node = find(root, 4);
-console.log(node); // Output: { data: 4, left: null, right: null }
+	const queue = [];
+	const result = [];
+
+	queue.push(root);
+
+	while (queue.length > 0) {
+		const node = queue.shift();
+		result.push(node.data);
+
+		if (callback) {
+			callback(node);
+		}
+
+		if (node.left !== null) {
+			queue.push(node.left);
+		}
+
+		if (node.right !== null) {
+			queue.push(node.right);
+		}
+	}
+
+	return result;
+}
+
+function inorder(root, callback = null) {
+	if (root === null) {
+		return [];
+	}
+
+	const result = [];
+
+	function traverse(node) {
+		if (node.left !== null) {
+			traverse(node.left);
+		}
+
+		result.push(node.data);
+
+		if (callback) {
+			callback(node);
+		}
+
+		if (node.right !== null) {
+			traverse(node.right);
+		}
+	}
+
+	traverse(root);
+
+	return result;
+}
+
+function preorder(root, callback = null) {
+	if (root === null) {
+		return [];
+	}
+
+	const result = [];
+
+	function traverse(node) {
+		result.push(node.data);
+
+		if (callback) {
+			callback(node);
+		}
+
+		if (node.left !== null) {
+			traverse(node.left);
+		}
+
+		if (node.right !== null) {
+			traverse(node.right);
+		}
+	}
+
+	traverse(root);
+
+	return result;
+}
+
+function postorder(root, callback = null) {
+	if (root === null) {
+		return [];
+	}
+
+	const result = [];
+
+	function traverse(node) {
+		if (node.left !== null) {
+			traverse(node.left);
+		}
+
+		if (node.right !== null) {
+			traverse(node.right);
+		}
+
+		result.push(node.data);
+
+		if (callback) {
+			callback(node);
+		}
+	}
+
+	traverse(root);
+
+	return result;
+}
+
+const root = createNode(1);
+root.left = createNode(2);
+root.right = createNode(3);
+root.left.left = createNode(4);
+root.left.right = createNode(5);
+root.right.left = createNode(6);
+root.right.right = createNode(7);
+
+const printNode = (node) => {
+	console.log(node.data);
+};
+
+const inorderValues = inorder(root);
+console.log(inorderValues); // Output: [4, 2, 5, 1, 6, 3, 7]
+
+const preorderValues = preorder(root);
+console.log(preorderValues); // Output: [1, 2, 4, 5, 3, 6, 7]
+
+const postorderValues = postorder(root);
+console.log(postorderValues); // Output: [4, 5, 2, 6, 7, 3, 1]
+
+inorder(root, printNode); // Output: 4, 2, 5, 1, 6, 3, 7 (printed individually)
+
+preorder(root, printNode); // Output: 1, 2, 4, 5, 3, 6, 7 (printed individually)
+
+postorder(root, printNode); // Output: 4, 5, 2, 6, 7, 3, 1 (printed individually)
