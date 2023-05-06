@@ -242,6 +242,21 @@ function depth(root, node) {
 	return Math.max(leftDepth, rightDepth) + 1;
 }
 
+function isBalanced(root) {
+	if (root === null) {
+		return true;
+	}
+
+	const leftHeight = height(root.left);
+	const rightHeight = height(root.right);
+
+	if (Math.abs(leftHeight - rightHeight) > 1) {
+		return false;
+	}
+
+	return isBalanced(root.left) && isBalanced(root.right);
+}
+
 const root = createNode(1);
 root.left = createNode(2);
 root.right = createNode(3);
@@ -250,5 +265,5 @@ root.left.right = createNode(5);
 root.right.left = createNode(6);
 root.right.right = createNode(7);
 
-const nodeDepth = depth(root, root.left.right);
-console.log(nodeDepth); // Output: 2
+const balanced = isBalanced(root);
+console.log(balanced); // Output: true
