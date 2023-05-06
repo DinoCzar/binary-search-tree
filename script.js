@@ -86,6 +86,18 @@ function findMinValue(node) {
 	return current.data;
 }
 
+function find(root, value) {
+	if (root === null || root.data === value) {
+		return root;
+	}
+
+	if (value < root.data) {
+		return find(root.left, value);
+	} else {
+		return find(root.right, value);
+	}
+}
+
 const root = createNode(5);
 insert(root, 3);
 insert(root, 8);
@@ -93,10 +105,5 @@ insert(root, 2);
 insert(root, 4);
 insert(root, 7);
 
-prettyPrint(root);
-
-deleteNode(root, 3);
-
-console.log('After deletion:');
-prettyPrint(root);
-
+const node = find(root, 4);
+console.log(node); // Output: { data: 4, left: null, right: null }
